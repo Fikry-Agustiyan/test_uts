@@ -1,136 +1,159 @@
-# Campus Service Ticketing System — Backend REST API
+Project tree:
 
-## Tech Stack
+```text
 
-Node.js · Express.js · MongoDB + Mongoose
-
----
-
-## Cara Menjalankan
-
-### 1. Install dependensi
-
-```bash
-npm install
-```
-
-### 2. Konfigurasi environment
-
-Buat file `.env` di root proyek:
-
-### 3. Jalankan server
-
-```bash
-# Development (dengan nodemon)
-npm run dev
-
-# Production
-npm start
-```
-
-### 4. Jalankan seeder (opsional, idempotent)
-
-```bash
-node seeder.js
-```
-
-Seeder akan membuat akun berikut jika belum ada:
-
-| Role  | Email              | Password   |
-| ----- | ------------------ | ---------- |
-| admin | admin@campus.ac.id | Admin1234! |
-| staff | staff@campus.ac.id | Staff1234! |
-| user  | budi@campus.ac.id  | User1234!  |
-| user  | ani@campus.ac.id   | User1234!  |
-
----
-
-## Endpoint List
-
-### Auth
-
-| Method | Path           | Akses  | Deskripsi             |
-| ------ | -------------- | ------ | --------------------- |
-| POST   | /auth/register | Public | Registrasi akun baru  |
-| POST   | /auth/login    | Public | Login, mendapat token |
-
-### Tickets
-
-| Method | Path         | Akses            | Deskripsi                                              |
-| ------ | ------------ | ---------------- | ------------------------------------------------------ |
-| POST   | /tickets     | user/staff/admin | Buat tiket baru (priority dihitung otomatis)           |
-| GET    | /tickets     | user/staff/admin | Daftar tiket (user: milik sendiri; staff/admin: semua) |
-| GET    | /tickets/:id | user/staff/admin | Detail tiket                                           |
-| PATCH  | /tickets/:id | user/staff/admin | Update tiket (field berbeda per role)                  |
-| DELETE | /tickets/:id | user/admin       | Hapus tiket                                            |
-
-**Query params GET /tickets:** `page`, `limit`, `status`, `category`, `priority`
-
-**Field PATCH per role:**
-
-- `user` → `title`, `description`, `location` (hanya jika status `open` atau `waiting_user`)
-- `staff`/`admin` → semua field + `status`, `priority`, `assignedTo`
-
-### Comments
-
-| Method | Path                                   | Akses               | Deskripsi            |
-| ------ | -------------------------------------- | ------------------- | -------------------- |
-| POST   | /tickets/:ticketId/comments            | user/staff/admin    | Tambah komentar      |
-| GET    | /tickets/:ticketId/comments            | user/staff/admin    | Lihat semua komentar |
-| DELETE | /tickets/:ticketId/comments/:commentId | pemilik/staff/admin | Hapus komentar       |
-
-### History
-
-| Method | Path                       | Akses            | Deskripsi           |
-| ------ | -------------------------- | ---------------- | ------------------- |
-| GET    | /tickets/:ticketId/history | user/staff/admin | Log perubahan tiket |
-
-### Meta
-
-| Method | Path        | Akses            | Deskripsi                    |
-| ------ | ----------- | ---------------- | ---------------------------- |
-| GET    | /meta/enums | user/staff/admin | Daftar nilai enum yang valid |
-
-### Dashboard
-
-| Method | Path             | Akses       | Deskripsi                                    |
-| ------ | ---------------- | ----------- | -------------------------------------------- |
-| GET    | /dashboard/stats | staff/admin | Agregasi tiket per status/kategori/prioritas |
-
----
-
-## Auto-Priority Logic
-
-| Category | Priority |
-| -------- | -------- |
-| network  | high     |
-| hardware | medium   |
-| software | medium   |
-| facility | low      |
-
----
-
-## Struktur Proyek
++ .vscode
+  - extensions.json
+  - settings.json
+- .eslintrc.js
+- .gitignore
+- .prettierrc
+- package-lock.json
+- package.json
 
 ```
-src/
-  api/
-    components/
-      auth/         # auth-controller, service, repository, route
-      tickets/      # tickets-controller, service, repository, route
-      comments/     # comments-controller, service, repository, route
-      history/      # history-controller, route
-      meta/         # meta-controller, route
-      dashboard/    # dashboard-controller, repository, route
-    middlewares/
-      authentication.js
-      role-checker.js
-      index.js
-    routes.js
-  core/             # config, errors, logger, server
-  models/           # users, tickets, comments, history schemas + index
-  utils/            # password helper
-  index.js
-seeder.js
-README.md
+
+
+
+File: .vscode/extensions.json
+
+```json
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}
 ```
+
+File: .vscode/settings.json
+
+```json
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.workingDirectories": [{
+    "mode": "auto"
+  }],
+  "eslint.validate": ["javascript"],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+
+```
+
+File: .eslintrc.js
+
+```js
+module.exports = {
+  env: {
+    node: true,
+    commonjs: true,
+    es2021: true,
+  },
+  extends: ['airbnb-base', 'prettier'],
+  plugins: ['prettier'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+  },
+  rules: {
+    'prettier/prettier': ['error'],
+  },
+};
+
+```
+
+File: .gitignore
+
+```
+node_modules
+.env
+desktop.ini
+.DS_Store
+.eslintcache
+.npm
+```
+
+File: .prettierrc
+
+```
+{
+  "singleQuote": true,
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "quoteProps": "consistent",
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "endOfLine": "lf"
+}
+```
+
+File: package-lock.json
+
+```json
+
+```
+
+File: package.json
+
+```json
+{
+  "name": "backend-programming-template-2025",
+  "version": "1.0.0",
+  "description": "Node.js · Express.js · MongoDB + Mongoose",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint src/**"
+  },
+  "author": "Janson Hendryli",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.22.1",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.3",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.12.2",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.6.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "nodemon": "^3.1.9",
+    "pino-pretty": "^13.0.0",
+    "prettier": "^3.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fikry-Agustiyan/Quiz-Backend.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Fikry-Agustiyan/Quiz-Backend/issues"
+  },
+  "homepage": "https://github.com/Fikry-Agustiyan/Quiz-Backend#readme"
+}
+
+```
+
+Always output in same format as provided. Only provide new or files that requires update
