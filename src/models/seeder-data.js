@@ -1,0 +1,196 @@
+module.exports = {
+  users: [
+    {
+      _id: '535250158',
+      email: 'josua@gmail.com',
+      password: '12345678',
+      fullName: 'Josua Christian Maitimu',
+      role: 'admin',
+    },
+    {
+      _id: '535250163',
+      email: 'christofer@gmail.com',
+      password: '12345678',
+      fullName: 'Christofer Reinner',
+      role: 'admin',
+    },
+    {
+      _id: '535250182',
+      email: 'marchellinus@gmail.com',
+      password: '12345678',
+      fullName: 'Marchellinus Olliver',
+      role: 'admin',
+    },
+    {
+      _id: '535250184',
+      email: 'fikry@gmail.com',
+      password: '12345678',
+      fullName: 'Fikry Agustiyan',
+      role: 'admin',
+    },
+    {
+      _id: '535250187',
+      email: 'kelvin@gmail.com',
+      password: '12345678',
+      fullName: 'Kelvin',
+      role: 'admin',
+    },
+    {
+      _id: '66661',
+      email: 'olliver@gmail.com',
+      password: '12345678',
+      fullName: 'Olliver',
+      role: 'staff',
+    },
+    {
+      _id: '66662',
+      email: 'agustiyan@gmail.com',
+      password: '12345678',
+      fullName: 'Agustiyan',
+      role: 'staff',
+    },
+    {
+      _id: '33331',
+      email: 'maitimu@gmail.com',
+      password: '12345678',
+      fullName: 'Maitimu',
+      role: 'user',
+    },
+    {
+      _id: '33332',
+      email: 'reinner@gmail.com',
+      password: '12345678',
+      fullName: 'Reinner',
+      role: 'user',
+    },
+    {
+      _id: '3333',
+      email: 'user@gmail.com',
+      password: '12345678',
+      fullName: 'user',
+      role: 'user',
+    },
+    {
+      _id: '6666',
+      email: 'staff@gmail.com',
+      password: '12345678',
+      fullName: 'staff',
+      role: 'staff',
+    },
+    {
+      _id: '9999',
+      email: 'admin@gmail.com',
+      password: '12345678',
+      fullName: 'admin',
+      role: 'admin',
+    },
+  ],
+  tickets: [
+    {
+      title: 'Masalah Jaringan R701',
+      description: 'Koneksi internet di ruangan 701 Gedung R terputus.',
+      status: 'open',
+      priority: 'high',
+      category: 'network',
+      location: 'Gedung R, Lantai 7, Ruang 701',
+    },
+    {
+      title: 'Update Aplikasi LINTAR',
+      description: 'Gagal login di aplikasi LINTAR saat pengisian KRS.',
+      status: 'in_progress',
+      priority: 'urgent',
+      category: 'software',
+      location: 'Digital / LINTAR App',
+    },
+    {
+      title: 'AC Rusak Gedung R1005',
+      description: 'AC di ruangan 1005 Gedung R mengeluarkan bunyi bising.',
+      status: 'open',
+      priority: 'medium',
+      category: 'facility',
+      location: 'Gedung R, Lantai 10, Ruang 1005',
+    },
+    {
+      title: 'Kebersihan Kantin Gedung P',
+      description: 'Ada tumpahan makanan di Lantai 1 Kantin Gedung P.',
+      status: 'resolved',
+      priority: 'low',
+      category: 'facility',
+      location: 'Gedung P, Lantai 1, Foodcourt',
+    },
+  ],
+  comments: [
+    {
+      ticketIndex: 0,
+      user_Id: '33331',
+      content:
+        'Koneksi mati sejak jam 08:00 WIB pagi ini, mohon segera ditangani karena ada perkuliahan.',
+    },
+    {
+      ticketIndex: 0,
+      user_Id: '66661',
+      content:
+        'Baik, tim IT (Staff) sedang menuju ke Gedung R lantai 7 untuk melakukan pengecekan router.',
+    },
+    {
+      ticketIndex: 1,
+      user_Id: '33332',
+      content: 'Sistem LINTAR saya muter-muter terus pas mau input KRS.',
+    },
+    {
+      ticketIndex: 1,
+      user_Id: '535250184',
+      content:
+        'Sedang ada maintenance server pusat UNTAR, estimasi kembali normal dalam 2 jam. Mohon ditunggu.',
+    },
+    {
+      ticketIndex: 3,
+      user_Id: '33331',
+      content: 'Tumpahan makanannya dekat area lift parkir basement.',
+    },
+    {
+      ticketIndex: 3,
+      user_Id: '66662',
+      content:
+        'Sudah dibersihkan dan dipel oleh tim cleaning service, terima kasih laporannya.',
+    },
+  ],
+  history: [
+    {
+      ticketIndex: 0,
+      user_Id: '33331',
+      action: 'created',
+      details: 'Tiket dibuat dengan prioritas high',
+    },
+    {
+      ticketIndex: 1,
+      user_Id: '33332',
+      action: 'created',
+      details: 'Tiket dibuat terkait LINTAR',
+    },
+    {
+      ticketIndex: 1,
+      user_Id: '535250184',
+      action: 'status_changed',
+      details: 'Status diubah menjadi in_progress oleh admin',
+    },
+    {
+      ticketIndex: 2,
+      user_Id: '33331',
+      action: 'created',
+      details: 'Laporan AC rusak Gedung R',
+    },
+    {
+      ticketIndex: 3,
+      user_Id: '33331',
+      action: 'created',
+      details: 'Laporan fasilitas kantin Gedung P',
+    },
+    {
+      ticketIndex: 3,
+      user_Id: '66662',
+      action: 'status_changed',
+      details: 'Status tiket ditutup (resolved) karena sudah dibersihkan',
+    },
+  ],
+};

@@ -2,17 +2,17 @@ const commentsRepository = require('./comments-repository');
 const logger = require('../../../core/logger')('app');
 
 async function getCommentsByTicket(ticketId) {
-  logger.info(`Menarik daftar komentar untuk tiket ID: ${ticketId}`);
+  // logger.info(`Menarik daftar komentar untuk tiket ID: ${ticketId}`);
   return commentsRepository.getCommentsByTicket(ticketId);
 }
 
 async function getComment(id) {
-  logger.info(`Menarik komentar spesifik (ID: ${id})`);
+  // logger.info(`Menarik komentar spesifik (ID: ${id})`);
   return commentsRepository.getComment(id);
 }
 
 async function createComment(ticketId, userId, content) {
-  logger.info('Menyimpan komentar baru ke database');
+  // logger.info('Menyimpan komentar baru ke database');
   try {
     await commentsRepository.createComment(ticketId, userId, content);
     return true;
@@ -23,7 +23,7 @@ async function createComment(ticketId, userId, content) {
 }
 
 async function updateComment(id, content) {
-  logger.info(`Memperbarui data komentar (ID: ${id})`);
+  // logger.info(`Memperbarui data komentar (ID: ${id})`);
   try {
     const result = await commentsRepository.updateComment(id, content);
     return result.modifiedCount > 0 || result.matchedCount > 0;
@@ -34,7 +34,7 @@ async function updateComment(id, content) {
 }
 
 async function deleteComment(id) {
-  logger.info(`Menghapus komentar dari database (ID: ${id})`);
+  // logger.info(`Menghapus komentar dari database (ID: ${id})`);
   try {
     const result = await commentsRepository.deleteComment(id);
     return result.deletedCount > 0;

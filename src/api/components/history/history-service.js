@@ -2,7 +2,7 @@ const historyRepository = require('./history-repository');
 const logger = require('../../../core/logger')('app');
 
 async function getTicketHistory(ticketId) {
-  logger.info(`Menarik data riwayat untuk tiket ID: ${ticketId}`);
+  // logger.info(`Menarik data riwayat untuk tiket ID: ${ticketId}`);
   return historyRepository.getTicketHistory(ticketId);
 }
 

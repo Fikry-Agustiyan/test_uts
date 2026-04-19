@@ -10,7 +10,7 @@ async function hashPassword(password) {
   const saltRounds = 10;
 
   try {
-    logger.info('Proses hashing password dimulai');
+    // logger.info('Proses hashing password dimulai');
     const hashedPassword = await new Promise((resolve, reject) => {
       bcrypt.hash(password, saltRounds, (err, hash) => {
         if (err) {
@@ -36,7 +36,7 @@ async function hashPassword(password) {
  * @returns {Promise<boolean>}
  */
 async function passwordMatched(password, hashedPassword) {
-  logger.info('Mencocokkan plain text password dengan hash');
+  // logger.info('Mencocokkan plain text password dengan hash');
   return bcrypt.compareSync(password, hashedPassword);
 }
 

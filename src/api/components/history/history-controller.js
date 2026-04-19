@@ -1,11 +1,11 @@
 const historyService = require('./history-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
-const logger = require('../../../core/logger')('app');
+// const logger = require('../../../core/logger')('app');
 
 async function getTicketHistory(request, response, next) {
   try {
     const { ticketId } = request.params;
-    logger.info(`Request untuk mendapatkan riwayat tiket ID: ${ticketId}`);
+    // logger.info(`Request untuk mendapatkan riwayat tiket ID: ${ticketId}`);
 
     const history = await historyService.getTicketHistory(ticketId);
     return response.status(200).json(history);
@@ -16,7 +16,7 @@ async function getTicketHistory(request, response, next) {
 
 async function createHistory(request, response, next) {
   try {
-    logger.info('Request untuk mencatat riwayat baru');
+    // logger.info('Request untuk mencatat riwayat baru');
     const {
       ticket_id: ticketId,
       user_id: userId,

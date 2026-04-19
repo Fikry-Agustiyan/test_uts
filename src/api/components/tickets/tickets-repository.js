@@ -29,12 +29,12 @@ async function updateTicket(id, title, description, status, priority) {
   if (status) updateData.status = status;
   if (priority) updateData.priority = priority;
 
-  return Tickets.updateOne({ _id: id }, { $set: updateData });
+  return Tickets.updateOne({ id }, { $set: updateData });
 }
 
 async function deleteTicket(id) {
   logger.info(`Eksekusi query DB: deleteTicket (${id})`);
-  return Tickets.deleteOne({ _id: id });
+  return Tickets.deleteOne({ id });
 }
 
 module.exports = {

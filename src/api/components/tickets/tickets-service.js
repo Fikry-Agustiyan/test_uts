@@ -2,12 +2,12 @@ const ticketsRepository = require('./tickets-repository');
 const logger = require('../../../core/logger')('app');
 
 async function getTickets() {
-  logger.info('Menarik semua data tiket dari repository');
+  // logger.info('Menarik semua data tiket dari repository');
   return ticketsRepository.getTickets();
 }
 
 async function getTicket(id) {
-  logger.info(`Menarik data tiket spesifik (ID: ${id})`);
+  // logger.info(`Menarik data tiket spesifik (ID: ${id})`);
   return ticketsRepository.getTicket(id);
 }
 

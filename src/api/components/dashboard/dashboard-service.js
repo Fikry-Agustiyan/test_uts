@@ -1,8 +1,8 @@
 const dashboardRepository = require('./dashboard-repository');
-const logger = require('../../../core/logger')('app');
+// const logger = require('../../../core/logger')('app');
 
 async function getSummary() {
-  logger.info('Menarik data agregat untuk dashboard');
+  // logger.info('Menarik data untuk dashboard');
   const totalUsers = await dashboardRepository.countUsers();
   const totalTickets = await dashboardRepository.countTickets();
   const totalComments = await dashboardRepository.countComments();

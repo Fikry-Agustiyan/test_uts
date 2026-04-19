@@ -2,17 +2,17 @@ const usersRepository = require('./users-repository');
 const logger = require('../../../core/logger')('app');
 
 async function getUsers() {
-  logger.info('Menarik semua data pengguna dari repository');
+  // logger.info('Menarik semua data pengguna dari repository');
   return usersRepository.getUsers();
 }
 
-async function getUser(id) {
-  logger.info(`Menarik data pengguna spesifik (ID: ${id})`);
-  return usersRepository.getUser(id);
+async function getUser(_id) {
+  // logger.info(`Menarik data pengguna spesifik (ID: ${id})`);
+  return usersRepository.getUser(_id);
 }
 
 async function emailExists(email) {
-  logger.info(`Memeriksa ketersediaan email: ${email}`);
+  // logger.info(`Memeriksa ketersediaan email: ${email}`);
   const user = await usersRepository.getUserByEmail(email);
   return !!user;
 }
@@ -28,36 +28,36 @@ async function createUser(email, password, fullName) {
   }
 }
 
-async function updateUser(id, email, fullName) {
-  logger.info(`Memperbarui data pengguna (ID: ${id})`);
+async function updateUser(_id, email, fullName) {
+  logger.info(`Memperbarui data pengguna (ID: ${_id})`);
   try {
-    const result = await usersRepository.updateUser(id, email, fullName);
+    const result = await usersRepository.updateUser(_id, email, fullName);
     return result.modifiedCount > 0 || result.matchedCount > 0;
   } catch (error) {
-    logger.error(`Gagal memperbarui pengguna (ID: ${id}): ${error.message}`);
+    logger.error(`Gagal memperbarui pengguna (ID: ${_id}): ${error.message}`);
     return false;
   }
 }
 
-async function deleteUser(id) {
-  logger.info(`Menghapus pengguna dari database (ID: ${id})`);
+async function deleteUser(_id) {
+  logger.info(`Menghapus pengguna dari database (ID: ${_id})`);
   try {
-    const result = await usersRepository.deleteUser(id);
+    const result = await usersRepository.deleteUser(_id);
     return result.deletedCount > 0;
   } catch (error) {
-    logger.error(`Gagal menghapus pengguna (ID: ${id}): ${error.message}`);
+    logger.error(`Gagal menghapus pengguna (ID: ${_id}): ${error.message}`);
     return false;
   }
 }
 
-async function changePassword(id, password) {
-  logger.info(`Memperbarui password di database (ID: ${id})`);
+async function changePassword(_id, password) {
+  logger.info(`Memperbarui password di database (ID: ${_id})`);
   try {
-    const result = await usersRepository.changePassword(id, password);
+    const result = await usersRepository.changePassword(_id, password);
     return result.modifiedCount > 0 || result.matchedCount > 0;
   } catch (error) {
     logger.error(
-      `Gagal memperbarui password pengguna (ID: ${id}): ${error.message}`
+      `Gagal memperbarui password pengguna (ID: ${_id}): ${error.message}`
     );
     return false;
   }

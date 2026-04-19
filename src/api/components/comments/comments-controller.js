@@ -1,13 +1,13 @@
 const commentsService = require('./comments-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
-const logger = require('../../../core/logger')('app');
+// const logger = require('../../../core/logger')('app');
 
 async function getCommentsByTicket(request, response, next) {
   try {
     const { ticketId } = request.params;
-    logger.info(
-      `Request untuk mendapatkan komentar pada tiket ID: ${ticketId}`
-    );
+    // logger.info(
+    //   `Request untuk mendapatkan komentar pada tiket ID: ${ticketId}`
+    // );
 
     const comments = await commentsService.getCommentsByTicket(ticketId);
     return response.status(200).json(comments);
@@ -18,7 +18,7 @@ async function getCommentsByTicket(request, response, next) {
 
 async function createComment(request, response, next) {
   try {
-    logger.info('Request untuk membuat komentar baru');
+    // logger.info('Request untuk membuat komentar baru');
     const { ticket_id: ticketId, user_id: userId, content } = request.body;
 
     if (!ticketId || !userId || !content) {
@@ -51,9 +51,9 @@ async function createComment(request, response, next) {
 
 async function updateComment(request, response, next) {
   try {
-    logger.info(
-      `Request untuk memperbarui komentar dengan ID: ${request.params.id}`
-    );
+    // logger.info(
+    //   `Request untuk memperbarui komentar dengan ID: ${request.params.id}`
+    // );
     const { content } = request.body;
 
     if (!content) {
@@ -90,9 +90,9 @@ async function updateComment(request, response, next) {
 
 async function deleteComment(request, response, next) {
   try {
-    logger.info(
-      `Request untuk menghapus komentar dengan ID: ${request.params.id}`
-    );
+    // logger.info(
+    //   `Request untuk menghapus komentar dengan ID: ${request.params.id}`
+    // );
 
     const success = await commentsService.deleteComment(request.params.id);
 

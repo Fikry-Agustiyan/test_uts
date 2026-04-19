@@ -1,8 +1,16 @@
+const crypto = require('crypto');
+
+const generateShortId = () => crypto.randomBytes(4).toString('hex');
+
 module.exports = (db) =>
   db.model(
     'Tickets',
     new db.Schema(
       {
+        _id: {
+          type: String,
+          default: generateShortId,
+        },
         title: { type: String, required: true, trim: true },
         description: { type: String, required: true },
         status: {
@@ -16,7 +24,7 @@ module.exports = (db) =>
           default: 'low',
         },
         user_id: {
-          type: db.Schema.Types.ObjectId,
+          type: String,
           ref: 'Users',
           required: true,
         },

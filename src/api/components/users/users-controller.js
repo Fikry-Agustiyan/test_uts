@@ -35,11 +35,16 @@ async function createUser(request, response, next) {
   try {
     logger.info('Request untuk membuat pengguna baru');
     const {
+      id,
       email,
       password,
       full_name: fullName,
       confirm_password: confirmPassword,
     } = request.body;
+
+    if (!id) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'ID is required');
+    }
 
     if (!email) {
       throw errorResponder(errorTypes.VALIDATION_ERROR, 'Email is required');
@@ -75,6 +80,7 @@ async function createUser(request, response, next) {
 
     const hashedPassword = await hashPassword(password);
     const success = await usersService.createUser(
+      id,
       email,
       hashedPassword,
       fullName

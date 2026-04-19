@@ -1,10 +1,10 @@
 const ticketsService = require('./tickets-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
-const logger = require('../../../core/logger')('app');
+// const logger = require('../../../core/logger')('app');
 
 async function getTickets(request, response, next) {
   try {
-    logger.info('Request untuk mendapatkan daftar tiket');
+    // logger.info('Request untuk mendapatkan daftar tiket');
     const tickets = await ticketsService.getTickets();
 
     return response.status(200).json(tickets);
@@ -15,9 +15,9 @@ async function getTickets(request, response, next) {
 
 async function getTicket(request, response, next) {
   try {
-    logger.info(
-      `Request untuk mendapatkan detail tiket dengan ID: ${request.params.id}`
-    );
+    // logger.info(
+    //   `Request untuk mendapatkan detail tiket dengan ID: ${request.params.id}`
+    // );
     const ticket = await ticketsService.getTicket(request.params.id);
 
     if (!ticket) {
@@ -32,7 +32,7 @@ async function getTicket(request, response, next) {
 
 async function createTicket(request, response, next) {
   try {
-    logger.info('Request untuk membuat tiket baru');
+    // logger.info('Request untuk membuat tiket baru');
     const { title, description, priority, user_id: userId } = request.body;
 
     if (!title || !description || !userId) {
@@ -66,9 +66,9 @@ async function createTicket(request, response, next) {
 
 async function updateTicket(request, response, next) {
   try {
-    logger.info(
-      `Request untuk memperbarui tiket dengan ID: ${request.params.id}`
-    );
+    // logger.info(
+    //   `Request untuk memperbarui tiket dengan ID: ${request.params.id}`
+    // );
     const { title, description, status, priority } = request.body;
 
     const ticket = await ticketsService.getTicket(request.params.id);
@@ -101,9 +101,9 @@ async function updateTicket(request, response, next) {
 
 async function deleteTicket(request, response, next) {
   try {
-    logger.info(
-      `Request untuk menghapus tiket dengan ID: ${request.params.id}`
-    );
+    // logger.info(
+    //   `Request untuk menghapus tiket dengan ID: ${request.params.id}`
+    // );
     const success = await ticketsService.deleteTicket(request.params.id);
 
     if (!success) {
