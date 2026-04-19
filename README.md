@@ -1,159 +1,69 @@
-Project tree:
+# Dokumentasi API (EchoAPI)
 
-```text
+Dokumentasi ini berisi daftar endpoint beserta konfigurasi URL, Method, Header, dan Body untuk pengujian menggunakan EchoAPI.
 
-+ .vscode
-  - extensions.json
-  - settings.json
-- .eslintrc.js
-- .gitignore
-- .prettierrc
-- package-lock.json
-- package.json
+**Base URL**: `http://localhost:5000/` _(sesuaikan dengan port/konfigurasi Anda)_
+**Global Header (untuk POST/PUT)**: `Content-Type: application/json`
 
-```
+---
 
+## 1. Users (`/users`)
 
+| Deskripsi       | Method   | URL                             | Body (JSON)                                                                         |
+| --------------- | -------- | ------------------------------- | ----------------------------------------------------------------------------------- |
+| Get All Users   | `GET`    | `api/users`                     | -                                                                                   |
+| Create User     | `POST`   | `api/users`                     | `{ "name": "John Doe", "email": "john@email.com", "password": "password123" }`      |
+| Get User Detail | `GET`    | `api/users/:id`                 | -                                                                                   |
+| Update User     | `PUT`    | `api/users/:id`                 | `{ "name": "John Doe Edit", "email": "john.edit@email.com" }`                       |
+| Change Password | `PUT`    | `api/users/:id/change-password` | `{ "oldPassword": "old123", "newPassword": "new123", "confirmPassword": "new123" }` |
+| Delete User     | `DELETE` | `api/users/:id`                 | -                                                                                   |
 
-File: .vscode/extensions.json
+---
 
-```json
-{
-  "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode"
-  ]
-}
-```
+## 2. Tickets (`/tickets`)
 
-File: .vscode/settings.json
+| Deskripsi         | Method   | URL               | Body (JSON)                                                          |
+| ----------------- | -------- | ----------------- | -------------------------------------------------------------------- |
+| Get All Tickets   | `GET`    | `api/tickets`     | -                                                                    |
+| Create Ticket     | `POST`   | `api/tickets`     | `{ "title": "Error Login", "description": "Gagal login di page X" }` |
+| Get Ticket Detail | `GET`    | `api/tickets/:id` | -                                                                    |
+| Update Ticket     | `PUT`    | `api/tickets/:id` | `{ "title": "Error Login Edit", "status": "resolved" }`              |
+| Delete Ticket     | `DELETE` | `api/tickets/:id` | -                                                                    |
 
-```json
-{
-  "editor.tabSize": 2,
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
-  "eslint.workingDirectories": [{
-    "mode": "auto"
-  }],
-  "eslint.validate": ["javascript"],
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
-}
+---
 
-```
+## 3. Comments (`/comments`)
 
-File: .eslintrc.js
+| Deskripsi              | Method   | URL                             | Body (JSON)                                                          |
+| ---------------------- | -------- | ------------------------------- | -------------------------------------------------------------------- |
+| Get Comments by Ticket | `GET`    | `api/comments/ticket/:ticketId` | -                                                                    |
+| Create Comment         | `POST`   | `api/comments`                  | `{ "ticketId": "ID_TICKET", "text": "Pengecekan sedang dilakukan" }` |
+| Update Comment         | `PUT`    | `api/comments/:id`              | `{ "text": "Pengecekan sudah selesai" }`                             |
+| Delete Comment         | `DELETE` | `api/comments/:id`              | -                                                                    |
 
-```js
-module.exports = {
-  env: {
-    node: true,
-    commonjs: true,
-    es2021: true,
-  },
-  extends: ['airbnb-base', 'prettier'],
-  plugins: ['prettier'],
-  parserOptions: {
-    ecmaVersion: 'latest',
-  },
-  rules: {
-    'prettier/prettier': ['error'],
-  },
-};
+---
 
-```
+## 4. History (`/history`)
 
-File: .gitignore
+| Deskripsi             | Method | URL                            | Body (JSON)                                                           |
+| --------------------- | ------ | ------------------------------ | --------------------------------------------------------------------- |
+| Get History by Ticket | `GET`  | `api/history/ticket/:ticketId` | -                                                                     |
+| Create History        | `POST` | `api/history`                  | `{ "ticketId": "ID_TICKET", "action": "Status changed to resolved" }` |
 
-```
-node_modules
-.env
-desktop.ini
-.DS_Store
-.eslintcache
-.npm
-```
+---
 
-File: .prettierrc
+## 5. Dashboard (`/dashboard`)
 
-```
-{
-  "singleQuote": true,
-  "printWidth": 80,
-  "tabWidth": 2,
-  "useTabs": false,
-  "semi": true,
-  "quoteProps": "consistent",
-  "trailingComma": "es5",
-  "bracketSpacing": true,
-  "arrowParens": "always",
-  "endOfLine": "lf"
-}
-```
+| Deskripsi   | Method | URL                     | Body (JSON) |
+| ----------- | ------ | ----------------------- | ----------- |
+| Get Summary | `GET`  | `api/dashboard/summary` | -           |
 
-File: package-lock.json
+---
 
-```json
+### Cara Import/Test Cepat di EchoAPI:
 
-```
-
-File: package.json
-
-```json
-{
-  "name": "backend-programming-template-2025",
-  "version": "1.0.0",
-  "description": "Node.js · Express.js · MongoDB + Mongoose",
-  "main": "src/index.js",
-  "scripts": {
-    "dev": "nodemon ./src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "eslint": "eslint src/**"
-  },
-  "author": "Janson Hendryli",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.22.1",
-    "express-async-errors": "^3.1.1",
-    "jsonwebtoken": "^9.0.3",
-    "method-override": "^3.0.0",
-    "mongoose": "^8.12.2",
-    "passport": "^0.7.0",
-    "passport-jwt": "^4.0.1",
-    "pino": "^9.6.0",
-    "pino-http": "^10.4.0"
-  },
-  "devDependencies": {
-    "@faker-js/faker": "^9.6.0",
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^10.1.1",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.2.3",
-    "nodemon": "^3.1.9",
-    "pino-pretty": "^13.0.0",
-    "prettier": "^3.5.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Fikry-Agustiyan/Quiz-Backend.git"
-  },
-  "keywords": [],
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Fikry-Agustiyan/Quiz-Backend/issues"
-  },
-  "homepage": "https://github.com/Fikry-Agustiyan/Quiz-Backend#readme"
-}
-
-```
-
-Always output in same format as provided. Only provide new or files that requires update
+1. Buat **New Request** di EchoAPI.
+2. Pilih **Method** sesuai tabel.
+3. Masukkan **URL** dan ubah parameter `:id` atau `:ticketId` dengan ID asli dari database.
+4. Jika Method POST/PUT, masuk ke tab **Body**, pilih **raw** dan tipe **JSON**.
+5. Salin data dari kolom Body di atas dan tekan **Send**.
