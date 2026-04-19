@@ -122,35 +122,35 @@ module.exports = {
   comments: [
     {
       ticketIndex: 0,
-      user_Id: '33331',
+      userId: '33331',
       content:
         'Koneksi mati sejak jam 08:00 WIB pagi ini, mohon segera ditangani karena ada perkuliahan.',
     },
     {
       ticketIndex: 0,
-      user_Id: '66661',
+      userId: '66661',
       content:
         'Baik, tim IT (Staff) sedang menuju ke Gedung R lantai 7 untuk melakukan pengecekan router.',
     },
     {
       ticketIndex: 1,
-      user_Id: '33332',
+      userId: '33332',
       content: 'Sistem LINTAR saya muter-muter terus pas mau input KRS.',
     },
     {
       ticketIndex: 1,
-      user_Id: '535250184',
+      userId: '535250184',
       content:
         'Sedang ada maintenance server pusat UNTAR, estimasi kembali normal dalam 2 jam. Mohon ditunggu.',
     },
     {
       ticketIndex: 3,
-      user_Id: '33331',
+      userId: '33331',
       content: 'Tumpahan makanannya dekat area lift parkir basement.',
     },
     {
       ticketIndex: 3,
-      user_Id: '66662',
+      userId: '66662',
       content:
         'Sudah dibersihkan dan dipel oleh tim cleaning service, terima kasih laporannya.',
     },
@@ -158,37 +158,37 @@ module.exports = {
   history: [
     {
       ticketIndex: 0,
-      user_Id: '33331',
+      userId: '33331',
       action: 'created',
       details: 'Tiket dibuat dengan prioritas high',
     },
     {
       ticketIndex: 1,
-      user_Id: '33332',
+      userId: '33332',
       action: 'created',
       details: 'Tiket dibuat terkait LINTAR',
     },
     {
       ticketIndex: 1,
-      user_Id: '535250184',
+      userId: '535250184',
       action: 'status_changed',
       details: 'Status diubah menjadi in_progress oleh admin',
     },
     {
       ticketIndex: 2,
-      user_Id: '33331',
+      userId: '33331',
       action: 'created',
       details: 'Laporan AC rusak Gedung R',
     },
     {
       ticketIndex: 3,
-      user_Id: '33331',
+      userId: '33331',
       action: 'created',
       details: 'Laporan fasilitas kantin Gedung P',
     },
     {
       ticketIndex: 3,
-      user_Id: '66662',
+      userId: '66662',
       action: 'status_changed',
       details: 'Status tiket ditutup (resolved) karena sudah dibersihkan',
     },

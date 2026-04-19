@@ -16,16 +16,23 @@ async function getUserByEmail(email) {
   return Users.findOne({ email });
 }
 
-async function createUser(email, password, fullName) {
-  // logger.info('Eksekusi query DB: createUser');
-  // Perbaikan: Mapping parameter fungsi fullName ke field database full_name
-  return Users.create({ email, password, full_name: fullName });
+async function createUser(id, fullName, email, password, role) {
+  return Users.create({
+    _id: id, // Map custom 'id' dari input ke '_id' Mongoose
+    full_name: fullName,
+    email,
+    password,
+    role: role || 'user', // Set default role to 'user' if not provided
+  });
 }
 
-async function updateUser(_id, email, fullName) {
+async function updateUser(_id, fullName, email, role) {
   // logger.info(`Eksekusi query DB: updateUser (${_id})`);
   // Perbaikan: Mapping fullName ke full_name
-  return Users.updateOne({ _id }, { $set: { email, full_name: fullName } });
+  return Users.updateOne(
+    { _id },
+    { $set: { full_name: fullName, email, role } }
+  );
 }
 
 async function changePassword(_id, password) {

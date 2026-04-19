@@ -17,10 +17,10 @@ async function emailExists(email) {
   return !!user;
 }
 
-async function createUser(email, password, fullName) {
+async function createUser(id, fullName, email, password, role) {
   logger.info(`Membuat pengguna baru melalui repository (Email: ${email})`);
   try {
-    await usersRepository.createUser(email, password, fullName);
+    await usersRepository.createUser(id, fullName, email, password, role);
     return true;
   } catch (error) {
     logger.error(`Gagal membuat pengguna: ${error.message}`);
@@ -28,10 +28,10 @@ async function createUser(email, password, fullName) {
   }
 }
 
-async function updateUser(_id, email, fullName) {
+async function updateUser(_id, fullName, email, role) {
   logger.info(`Memperbarui data pengguna (ID: ${_id})`);
   try {
-    const result = await usersRepository.updateUser(_id, email, fullName);
+    const result = await usersRepository.updateUser(_id, fullName, email, role);
     return result.modifiedCount > 0 || result.matchedCount > 0;
   } catch (error) {
     logger.error(`Gagal memperbarui pengguna (ID: ${_id}): ${error.message}`);

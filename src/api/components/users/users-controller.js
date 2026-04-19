@@ -3,6 +3,8 @@ const { errorResponder, errorTypes } = require('../../../core/errors');
 const { hashPassword, passwordMatched } = require('../../../utils/password');
 const logger = require('../../../core/logger')('app');
 
+const validRoles = ['user', 'staff', 'admin'];
+
 async function getUsers(request, response, next) {
   try {
     logger.info('Request untuk mendapatkan daftar seluruh pengguna');
@@ -33,23 +35,41 @@ async function getUser(request, response, next) {
 
 async function createUser(request, response, next) {
   try {
-    logger.info('Request untuk membuat pengguna baru');
+    const allowedFields = [
+      'id',
+      'full_name',
+      'email',
+      'password',
+      'confirm_password',
+    ];
+
+    const incomingFields = Object.keys(request.body);
+
+    const extraFields = incomingFields.filter(
+      (field) => !allowedFields.includes(field)
+    );
+
+    if (extraFields.length > 0) {
+      throw errorResponder(
+        errorTypes.VALIDATION_ERROR,
+        `Invalid fields in request body: ${extraFields.join(', ')}`
+      );
+    }
+    // logger.info('Request untuk membuat pengguna baru');
+
+    // 1. Ekstrak body, perhatikan penggunaan alias (: fullName) agar cocok dengan nama variabel di bawah
     const {
       id,
+      full_name: fullName,
       email,
       password,
-      full_name: fullName,
       confirm_password: confirmPassword,
     } = request.body;
 
+    // 2. Lakukan semua validasi yang diperlukan
     if (!id) {
       throw errorResponder(errorTypes.VALIDATION_ERROR, 'ID is required');
     }
-
-    if (!email) {
-      throw errorResponder(errorTypes.VALIDATION_ERROR, 'Email is required');
-    }
-
     if (!fullName) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
@@ -57,11 +77,8 @@ async function createUser(request, response, next) {
       );
     }
 
-    if (await usersService.emailExists(email)) {
-      throw errorResponder(
-        errorTypes.EMAIL_ALREADY_TAKEN,
-        'Email already exists'
-      );
+    if (!email) {
+      throw errorResponder(errorTypes.VALIDATION_ERROR, 'Email is required');
     }
 
     if (password.length < 8) {
@@ -70,20 +87,28 @@ async function createUser(request, response, next) {
         'Password must be at least 8 characters long'
       );
     }
-
     if (password !== confirmPassword) {
       throw errorResponder(
         errorTypes.VALIDATION_ERROR,
         'Password and confirm password do not match'
       );
     }
+    if (await usersService.emailExists(email)) {
+      throw errorResponder(
+        errorTypes.EMAIL_ALREADY_TAKEN,
+        'Email already exists'
+      );
+    }
 
+    // 3. Hash password dan simpan
     const hashedPassword = await hashPassword(password);
+
     const success = await usersService.createUser(
       id,
+      fullName,
       email,
       hashedPassword,
-      fullName
+      'user' // Set default role to 'user'
     );
 
     if (!success) {
@@ -101,10 +126,33 @@ async function createUser(request, response, next) {
 
 async function updateUser(request, response, next) {
   try {
+    const allowedFields = ['full_name', 'email', 'role'];
+
+    const incomingFields = Object.keys(request.body);
+
+    const extraFields = incomingFields.filter(
+      (field) => !allowedFields.includes(field)
+    );
+
+    if (extraFields.length > 0) {
+      throw errorResponder(
+        errorTypes.VALIDATION_ERROR,
+        `Invalid fields in request body: ${extraFields.join(', ')}`
+      );
+    }
+
     logger.info(
       `Request untuk memperbarui pengguna dengan ID: ${request.params.id}`
     );
-    const { email, full_name: fullName } = request.body;
+    const { full_name: fullName, email, role } = request.body;
+    const { id } = request.params;
+
+    if (role && !validRoles.includes(role)) {
+      throw errorResponder(
+        errorTypes.VALIDATION_ERROR,
+        `Invalid role. Allowed roles: ${validRoles.join(', ')}`
+      );
+    }
 
     const user = await usersService.getUser(request.params.id);
     if (!user) {
@@ -129,11 +177,7 @@ async function updateUser(request, response, next) {
       );
     }
 
-    const success = await usersService.updateUser(
-      request.params.id,
-      email,
-      fullName
-    );
+    const success = await usersService.updateUser(id, fullName, email, role);
 
     if (!success) {
       throw errorResponder(

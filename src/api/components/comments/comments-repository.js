@@ -24,12 +24,14 @@ async function createComment(ticketId, userId, content) {
 
 async function updateComment(id, content) {
   // logger.info(`Eksekusi query DB: updateComment (${id})`);
-  return Comments.updateOne({ id }, { $set: { content } });
+  // PERBAIKAN: Ubah { id } menjadi { _id: id }
+  return Comments.updateOne({ _id: id }, { $set: { content } });
 }
 
 async function deleteComment(id) {
   // logger.info(`Eksekusi query DB: deleteComment (${id})`);
-  return Comments.deleteOne({ id });
+  // PERBAIKAN: Ubah { id } menjadi { _id: id }
+  return Comments.deleteOne({ _id: id });
 }
 
 module.exports = {
