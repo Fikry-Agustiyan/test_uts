@@ -1,9 +1,24 @@
 const { History } = require('../../../models');
+const logger = require('../../../core/logger')('app');
 
-async function findByTicket(ticketId) {
-  return History.find({ ticketId })
-    .populate('changedBy', 'full_name email role')
-    .sort({ createdAt: 1 });
+async function getTicketHistory(ticketId) {
+  logger.info(`Eksekusi query DB: getTicketHistory (${ticketId})`);
+  return History.find({ ticket_id: ticketId })
+    .populate('user_id', 'full_name email')
+    .sort({ createdAt: -1 }); // Urutkan dari yang terbaru
 }
 
-module.exports = { findByTicket };
+async function createHistory(ticketId, userId, action, details) {
+  logger.info('Eksekusi query DB: createHistory');
+  return History.create({
+    ticket_id: ticketId,
+    user_id: userId,
+    action,
+    details,
+  });
+}
+
+module.exports = {
+  getTicketHistory,
+  createHistory,
+};

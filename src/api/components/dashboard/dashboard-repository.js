@@ -1,14 +1,23 @@
-const { Ticket } = require('../../../models');
+const { Users, Tickets, Comments } = require('../../../models');
+const logger = require('../../../core/logger')('app');
 
-async function getStats() {
-  const [byStatus, byCategory, byPriority, total] = await Promise.all([
-    Ticket.aggregate([{ $group: { _id: '$status', count: { $sum: 1 } } }]),
-    Ticket.aggregate([{ $group: { _id: '$category', count: { $sum: 1 } } }]),
-    Ticket.aggregate([{ $group: { _id: '$priority', count: { $sum: 1 } } }]),
-    Ticket.countDocuments(),
-  ]);
-
-  return { total, byStatus, byCategory, byPriority };
+async function countUsers() {
+  logger.info('Eksekusi query DB: countUsers');
+  return Users.countDocuments();
 }
 
-module.exports = { getStats };
+async function countTickets() {
+  logger.info('Eksekusi query DB: countTickets');
+  return Tickets.countDocuments();
+}
+
+async function countComments() {
+  logger.info('Eksekusi query DB: countComments');
+  return Comments.countDocuments();
+}
+
+module.exports = {
+  countUsers,
+  countTickets,
+  countComments,
+};

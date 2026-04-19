@@ -1,35 +1,24 @@
 module.exports = (db) =>
   db.model(
-    'Ticket',
+    'Tickets',
     new db.Schema(
       {
         title: { type: String, required: true, trim: true },
-        description: { type: String, required: true, trim: true },
-        category: {
-          type: String,
-          required: true,
-          enum: ['network', 'hardware', 'software', 'facility'],
-        },
-        location: { type: String, required: true, trim: true },
-        priority: {
-          type: String,
-          enum: ['low', 'medium', 'high'],
-          default: 'low',
-        },
+        description: { type: String, required: true },
         status: {
           type: String,
-          enum: ['open', 'in_progress', 'waiting_user', 'resolved', 'closed'],
+          enum: ['open', 'in_progress', 'resolved', 'closed'],
           default: 'open',
         },
-        submittedBy: {
-          type: db.Schema.Types.ObjectId,
-          ref: 'User',
-          required: true,
+        priority: {
+          type: String,
+          enum: ['low', 'medium', 'high', 'urgent'],
+          default: 'low',
         },
-        assignedTo: {
+        user_id: {
           type: db.Schema.Types.ObjectId,
-          ref: 'User',
-          default: null,
+          ref: 'Users',
+          required: true,
         },
       },
       { timestamps: true }

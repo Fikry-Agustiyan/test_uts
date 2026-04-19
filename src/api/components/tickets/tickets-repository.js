@@ -1,64 +1,46 @@
-const { Ticket, History } = require('../../../models');
+const { Tickets } = require('../../../models');
+const logger = require('../../../core/logger')('app');
 
-/**
- * Insert a new ticket document.
- */
-async function createTicket(data) {
-  return Ticket.create(data);
+async function getTickets() {
+  logger.info('Eksekusi query DB: getTickets');
+  return Tickets.find({}).populate('user_id', 'full_name email');
 }
 
-/**
- * Find tickets with optional filter, pagination, and population.
- */
-async function findTickets(filter = {}, { page = 1, limit = 10 } = {}) {
-  const skip = (page - 1) * limit;
-  const [data, total] = await Promise.all([
-    Ticket.find(filter)
-      .populate('submittedBy', 'full_name email')
-      .populate('assignedTo', 'full_name email')
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit),
-    Ticket.countDocuments(filter),
-  ]);
-  return { data, total, page, limit };
+async function getTicket(id) {
+  logger.info(`Eksekusi query DB: getTicket (${id})`);
+  return Tickets.findById(id).populate('user_id', 'full_name email');
 }
 
-/**
- * Find a single ticket by its ID.
- */
-async function findTicketById(id) {
-  return Ticket.findById(id)
-    .populate('submittedBy', 'full_name email')
-    .populate('assignedTo', 'full_name email');
+async function createTicket(title, description, priority, userId) {
+  logger.info('Eksekusi query DB: createTicket');
+  return Tickets.create({
+    title,
+    description,
+    priority: priority || 'low',
+    user_id: userId,
+  });
 }
 
-/**
- * Update a ticket and return the updated document.
- */
-async function updateTicket(id, updates) {
-  return Ticket.findByIdAndUpdate(id, updates, { new: true });
+async function updateTicket(id, title, description, status, priority) {
+  logger.info(`Eksekusi query DB: updateTicket (${id})`);
+  const updateData = {};
+  if (title) updateData.title = title;
+  if (description) updateData.description = description;
+  if (status) updateData.status = status;
+  if (priority) updateData.priority = priority;
+
+  return Tickets.updateOne({ _id: id }, { $set: updateData });
 }
 
-/**
- * Delete a ticket by ID.
- */
 async function deleteTicket(id) {
-  return Ticket.findByIdAndDelete(id);
-}
-
-/**
- * Insert a history log entry for a ticket change.
- */
-async function insertHistory(ticketId, changedBy, changes, note = '') {
-  return History.create({ ticketId, changedBy, changes, note });
+  logger.info(`Eksekusi query DB: deleteTicket (${id})`);
+  return Tickets.deleteOne({ _id: id });
 }
 
 module.exports = {
+  getTickets,
+  getTicket,
   createTicket,
-  findTickets,
-  findTicketById,
   updateTicket,
   deleteTicket,
-  insertHistory,
 };

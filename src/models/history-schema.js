@@ -3,18 +3,18 @@ module.exports = (db) =>
     'History',
     new db.Schema(
       {
-        ticketId: {
+        ticket_id: {
           type: db.Schema.Types.ObjectId,
-          ref: 'Ticket',
+          ref: 'Tickets',
           required: true,
         },
-        changedBy: {
+        user_id: {
           type: db.Schema.Types.ObjectId,
-          ref: 'User',
+          ref: 'Users',
           required: true,
         },
-        changes: { type: Object, required: true },
-        note: { type: String, default: '' },
+        action: { type: String, required: true }, // e.g., 'created', 'updated', 'closed'
+        details: { type: String },
       },
       { timestamps: true }
     )

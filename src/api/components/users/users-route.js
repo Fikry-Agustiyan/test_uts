@@ -1,5 +1,4 @@
 const express = require('express');
-
 const usersController = require('./users-controller');
 
 const route = express.Router();

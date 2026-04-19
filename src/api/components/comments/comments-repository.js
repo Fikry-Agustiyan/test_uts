@@ -1,21 +1,41 @@
-const { Comment } = require('../../../models');
+const { Comments } = require('../../../models');
+const logger = require('../../../core/logger')('app');
 
-async function createComment(data) {
-  return Comment.create(data);
-}
-
-async function findByTicket(ticketId) {
-  return Comment.find({ ticketId })
-    .populate('author', 'full_name email role')
+async function getCommentsByTicket(ticketId) {
+  logger.info(`Eksekusi query DB: getCommentsByTicket (${ticketId})`);
+  return Comments.find({ ticket_id: ticketId })
+    .populate('user_id', 'full_name email')
     .sort({ createdAt: 1 });
 }
 
-async function findById(id) {
-  return Comment.findById(id).populate('author', 'full_name email role');
+async function getComment(id) {
+  logger.info(`Eksekusi query DB: getComment (${id})`);
+  return Comments.findById(id);
+}
+
+async function createComment(ticketId, userId, content) {
+  logger.info('Eksekusi query DB: createComment');
+  return Comments.create({
+    ticket_id: ticketId,
+    user_id: userId,
+    content,
+  });
+}
+
+async function updateComment(id, content) {
+  logger.info(`Eksekusi query DB: updateComment (${id})`);
+  return Comments.updateOne({ _id: id }, { $set: { content } });
 }
 
 async function deleteComment(id) {
-  return Comment.findByIdAndDelete(id);
+  logger.info(`Eksekusi query DB: deleteComment (${id})`);
+  return Comments.deleteOne({ _id: id });
 }
 
-module.exports = { createComment, findByTicket, findById, deleteComment };
+module.exports = {
+  getCommentsByTicket,
+  getComment,
+  createComment,
+  updateComment,
+  deleteComment,
+};

@@ -1,12 +1,14 @@
 const express = require('express');
-const controller = require('./history-controller');
-const { authMiddleware } = require('../../middlewares');
+const historyController = require('./history-controller');
+
+const route = express.Router();
 
 module.exports = (app) => {
-  const route = express.Router({ mergeParams: true });
+  app.use('/history', route);
 
-  app.use('/tickets/:ticketId/history', route);
+  // Get history logs by ticket ID
+  route.get('/ticket/:ticketId', historyController.getTicketHistory);
 
-  route.use(authMiddleware);
-  route.get('/', controller.list);
+  // Create a new history log
+  route.post('/', historyController.createHistory);
 };

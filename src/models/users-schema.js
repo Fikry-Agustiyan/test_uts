@@ -1,7 +1,3 @@
-/**
- * Extended with `role` field (user | staff | admin).
- * All other fields remain as originally defined.
- */
 module.exports = (db) =>
   db.model(
     'Users',

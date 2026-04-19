@@ -1,19 +1,19 @@
 module.exports = (db) =>
   db.model(
-    'Comment',
+    'Comments',
     new db.Schema(
       {
-        ticketId: {
+        ticket_id: {
           type: db.Schema.Types.ObjectId,
-          ref: 'Ticket',
+          ref: 'Tickets',
           required: true,
         },
-        author: {
+        user_id: {
           type: db.Schema.Types.ObjectId,
-          ref: 'User',
+          ref: 'Users',
           required: true,
         },
-        body: { type: String, required: true, trim: true },
+        content: { type: String, required: true },
       },
       { timestamps: true }
     )

@@ -1,15 +1,20 @@
 const express = require('express');
-const controller = require('./comments-controller');
-const { authMiddleware } = require('../../middlewares');
+const commentsController = require('./comments-controller');
+
+const route = express.Router();
 
 module.exports = (app) => {
-  const route = express.Router({ mergeParams: true });
+  app.use('/comments', route);
 
-  app.use('/tickets/:ticketId/comments', route);
+  // Get comments by ticket ID
+  route.get('/ticket/:ticketId', commentsController.getCommentsByTicket);
 
-  route.use(authMiddleware);
+  // Create a new comment
+  route.post('/', commentsController.createComment);
 
-  route.post('/', controller.add);
-  route.get('/', controller.list);
-  route.delete('/:commentId', controller.remove);
+  // Update a comment
+  route.put('/:id', commentsController.updateComment);
+
+  // Delete a comment
+  route.delete('/:id', commentsController.deleteComment);
 };

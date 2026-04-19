@@ -1,64 +1,53 @@
-const repository = require('./comments-repository');
-const ticketRepo = require('../tickets/tickets-repository');
-const { errorResponder, errorTypes } = require('../../../core/errors');
+const commentsRepository = require('./comments-repository');
+const logger = require('../../../core/logger')('app');
 
-async function addComment(user, ticketId, body) {
-  const ticket = await ticketRepo.findTicketById(ticketId);
-
-  if (!ticket) {
-    throw errorResponder(errorTypes.NOT_FOUND, 'Ticket not found.');
-  }
-
-  if (
-    user.role === 'user' &&
-    String(ticket.submittedBy._id) !== String(user.id)
-  ) {
-    throw errorResponder(errorTypes.FORBIDDEN, 'Access denied.');
-  }
-
-  if (!body || !body.trim()) {
-    throw errorResponder(
-      errorTypes.VALIDATION_ERROR,
-      'Comment body is required.'
-    );
-  }
-
-  return repository.createComment({ ticketId, author: user.id, body });
+async function getCommentsByTicket(ticketId) {
+  logger.info(`Menarik daftar komentar untuk tiket ID: ${ticketId}`);
+  return commentsRepository.getCommentsByTicket(ticketId);
 }
 
-async function listComments(user, ticketId) {
-  const ticket = await ticketRepo.findTicketById(ticketId);
-
-  if (!ticket) {
-    throw errorResponder(errorTypes.NOT_FOUND, 'Ticket not found.');
-  }
-
-  if (
-    user.role === 'user' &&
-    String(ticket.submittedBy._id) !== String(user.id)
-  ) {
-    throw errorResponder(errorTypes.FORBIDDEN, 'Access denied.');
-  }
-
-  return repository.findByTicket(ticketId);
+async function getComment(id) {
+  logger.info(`Menarik komentar spesifik (ID: ${id})`);
+  return commentsRepository.getComment(id);
 }
 
-async function removeComment(user, commentId) {
-  const comment = await repository.findById(commentId);
-
-  if (!comment) {
-    throw errorResponder(errorTypes.NOT_FOUND, 'Comment not found.');
+async function createComment(ticketId, userId, content) {
+  logger.info('Menyimpan komentar baru ke database');
+  try {
+    await commentsRepository.createComment(ticketId, userId, content);
+    return true;
+  } catch (error) {
+    logger.error(`Gagal membuat komentar: ${error.message}`);
+    return false;
   }
-
-  const isOwner = String(comment.author._id) === String(user.id);
-  const isPrivileged = ['staff', 'admin'].includes(user.role);
-
-  if (!isOwner && !isPrivileged) {
-    throw errorResponder(errorTypes.FORBIDDEN, 'Access denied.');
-  }
-
-  await repository.deleteComment(commentId);
-  return { deleted: true };
 }
 
-module.exports = { addComment, listComments, removeComment };
+async function updateComment(id, content) {
+  logger.info(`Memperbarui data komentar (ID: ${id})`);
+  try {
+    const result = await commentsRepository.updateComment(id, content);
+    return result.modifiedCount > 0 || result.matchedCount > 0;
+  } catch (error) {
+    logger.error(`Gagal memperbarui komentar (ID: ${id}): ${error.message}`);
+    return false;
+  }
+}
+
+async function deleteComment(id) {
+  logger.info(`Menghapus komentar dari database (ID: ${id})`);
+  try {
+    const result = await commentsRepository.deleteComment(id);
+    return result.deletedCount > 0;
+  } catch (error) {
+    logger.error(`Gagal menghapus komentar (ID: ${id}): ${error.message}`);
+    return false;
+  }
+}
+
+module.exports = {
+  getCommentsByTicket,
+  getComment,
+  createComment,
+  updateComment,
+  deleteComment,
+};

@@ -1,18 +1,23 @@
 const express = require('express');
-const controller = require('./tickets-controller');
-const { authMiddleware, roleChecker } = require('../../middlewares');
+const ticketsController = require('./tickets-controller');
+
+const route = express.Router();
 
 module.exports = (app) => {
-  const route = express.Router();
-
   app.use('/tickets', route);
 
-  // All ticket routes require authentication
-  route.use(authMiddleware);
+  // Get list of tickets
+  route.get('/', ticketsController.getTickets);
 
-  route.post('/', controller.create);
-  route.get('/', controller.list);
-  route.get('/:id', controller.detail);
-  route.patch('/:id', controller.update);
-  route.delete('/:id', roleChecker('user', 'admin'), controller.remove);
+  // Create a new ticket
+  route.post('/', ticketsController.createTicket);
+
+  // Get ticket detail
+  route.get('/:id', ticketsController.getTicket);
+
+  // Update ticket
+  route.put('/:id', ticketsController.updateTicket);
+
+  // Delete ticket
+  route.delete('/:id', ticketsController.deleteTicket);
 };

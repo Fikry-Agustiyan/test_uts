@@ -1,11 +1,10 @@
 const express = require('express');
-const controller = require('./meta-controller');
-const { authMiddleware } = require('../../middlewares');
+const metaController = require('./meta-controller');
+
+const route = express.Router();
 
 module.exports = (app) => {
-  const route = express.Router();
   app.use('/meta', route);
 
-  route.use(authMiddleware);
-  route.get('/enums', controller.enums);
+  route.get('/', metaController.getMeta);
 };

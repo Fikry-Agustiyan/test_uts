@@ -1,13 +1,11 @@
 const express = require('express');
-const controller = require('./dashboard-controller');
-const { authMiddleware, roleChecker } = require('../../middlewares');
+const dashboardController = require('./dashboard-controller');
+
+const route = express.Router();
 
 module.exports = (app) => {
-  const route = express.Router();
   app.use('/dashboard', route);
 
-  route.use(authMiddleware);
-  route.use(roleChecker('staff', 'admin'));
-
-  route.get('/stats', controller.stats);
+  // Get overall summary data for dashboard
+  route.get('/summary', dashboardController.getSummary);
 };
